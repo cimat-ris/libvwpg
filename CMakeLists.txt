@@ -52,14 +52,13 @@ target_link_libraries(test1-vwpg libvwpg opencv_core opencv_calib3d qpOASES)
 ############################################################
 # Create the test2 executable
 ############################################################
-# qi_create_bin(test2-vwpg  "${CMAKE_CURRENT_SOURCE_DIR}/./src/test2.cpp")
-# qi_use_lib(test2-vwpg boost_filesystem boost_system qpoases OPENCV2_CORE OPENCV2_HIGHGUI)
-# target_link_libraries(test2-vwpg libvwpg)
+add_executable(test2-vwpg  "${CMAKE_CURRENT_SOURCE_DIR}/./src/test2.cpp")
+target_link_libraries(test2-vwpg libvwpg opencv_core opencv_calib3d qpOASES)
 
 ############################################################
 # Create  python binding
 ############################################################
-# OPTION (BUILD_PYTHON_INTERFACE "Build the python binding" ON)
+OPTION (BUILD_PYTHON_INTERFACE "Build the python binding" ON)
 # IF(BUILD_PYTHON_INTERFACE)
 #substitute your version number
 #find_package(Boost 1.58 EXACT REQUIRED COMPONENTS python)
