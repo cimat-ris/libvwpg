@@ -61,7 +61,7 @@ class QProblemInterface {
 class QPSolver {
 
     public:
-        QPSolver(QProblemInterface *qp_problem, int mWSR=100000);
+        QPSolver(QProblemInterface *qp_problem, long mWSR=100000L);
         void SolveProblem();
         Matrix_t GetSolution();
         FPTYPE GetObjectiveFunctionValue();
