@@ -2,15 +2,13 @@
 
 Visual Walking Pattern Generation
 
-In order to compile this code two external dependencies should be installed: eigen and>
+In order to compile this code two external dependencies should be installed: eigen and 
 
 First, compile qpOases with CMake:
 
 ```bash
-> cd qpOASES/qpOASES-3.2.1
-> mkdir build
-> cd build
-> cmake -DCMAKE_TOOLCHAIN_FILE=${PATH_TO_NAOQI_SDK}/toolchain-pc.cmake ..
+> cd qpOASES/
+> mkdir bin
 > make
 ```
 
@@ -19,7 +17,7 @@ Then compile the libvwpg library. From the libvwpg directory:
 ```bash
 > mkdir build
 > cd build
-> cmake -DCMAKE_TOOLCHAIN_FILE=${PATH_TO_NAOQI_SDK}/toolchain-pc.cmake ..
+> cmake ..
 > make
 ```
 
