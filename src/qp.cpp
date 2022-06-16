@@ -30,13 +30,13 @@
 #include "common.h"
 
 
-QPSolver::QPSolver(QProblemInterface *qp_problem, int nWSR) :
+QPSolver::QPSolver(QProblemInterface *qp_problem, long nWSR) :
     problem_(qp_problem),
     nWSR_(nWSR),
     is_first_solution_(true),
-    qpoases_solver_(problem_->GetNumberOfVariables(), problem_->GetNumberOfConstraints())
+    qpoases_solver_(problem_->GetNumberOfVariables(),problem_->GetNumberOfConstraints())
 {
-    int tmp_nWSR = nWSR_;   // qpOASES overrides the value of nWSR, use a copy
+    long tmp_nWSR = nWSR_;   // qpOASES overrides the value of nWSR, use a copy
     qpOASES::returnValue return_value;
     qpoases_solver_.setPrintLevel(qpOASES::PL_NONE);
     return_value = qpoases_solver_.init(problem_->GetH().data(),
@@ -59,7 +59,7 @@ void QPSolver::SolveProblem()
 {
 
     if (!is_first_solution_) {
-        int tmp_nWSR = nWSR_;   // qpOASES overrides the value of nWSR, use a copy
+        long tmp_nWSR = nWSR_;   // qpOASES overrides the value of nWSR, use a copy
         qpOASES::returnValue return_value;
 
         return_value = qpoases_solver_.hotstart(problem_->GetH().data(),
