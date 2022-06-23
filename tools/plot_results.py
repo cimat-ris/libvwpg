@@ -182,8 +182,8 @@ def plot_walk_pattern(all_raw_data, prefix_name):
     if (len(all_raw_data['predicted_com_position'])>0):
         i_horiz, x_axis, y_axis, phi = prepare_predicted_data_for_plot(all_raw_data['predicted_com_position'])
         horizmax = max(i_horiz)
-        nsteps   = len(i_horiz)/(horizmax+1)
-        for k in xrange(0,nsteps):
+        nsteps   = int(len(i_horiz)/(horizmax+1))
+        for k in range(0,nsteps):
             xpred  = x_axis[k*(horizmax+1):(k+1)*(horizmax+1)];
             ypred  = y_axis[k*(horizmax+1):(k+1)*(horizmax+1)];
             phipred= phi[k*(horizmax+1):(k+1)*(horizmax+1)];
@@ -193,8 +193,8 @@ def plot_walk_pattern(all_raw_data, prefix_name):
     if (len(all_raw_data['predicted_com_position'])>0):
         i_horiz, x_axis, y_axis, __ = prepare_predicted_data_for_plot(all_raw_data['predicted_zmp_position'])
         horizmax = max(i_horiz)
-        nsteps   = len(i_horiz)/(horizmax+1)
-        for k in xrange(0,nsteps):
+        nsteps   = int(len(i_horiz)/(horizmax+1))
+        for k in range(0,nsteps):
             xpred  = x_axis[k*(horizmax+1):(k+1)*(horizmax+1)];
             ypred  = y_axis[k*(horizmax+1):(k+1)*(horizmax+1)];
             axis.plot(xpred, ypred, 'cyan', linewidth=1)
@@ -274,7 +274,7 @@ def plot_com_conf(all_raw_data, prefix_name):
     sftheta = [entry.split()[1] for entry in all_raw_data['support_foot_theta']]
     sftheta = [entry.split('=')[1] for entry in sftheta]
     sftheta = [float(entry) for entry in sftheta]
-    axis = figure.add_subplot(1, 1, 1)   
+    #axis = figure.add_subplot(1, 1, 1)   
     # x axis data
     axis.plot(theta, 'r-', label='Trunk global orientation')
     ittheta_disc = []
@@ -307,6 +307,7 @@ def plot_com_speed(all_raw_data, prefix_name):
     """ """
     figure = pyplot.figure()
     x_axis, y_axis, __ = prepare_data_for_plot(all_raw_data['com_speed'])
+    print("x_axis.shape = ",len(x_axis))
 
     # x axis data
     axis = figure.add_subplot(1, 1, 1)
@@ -320,7 +321,7 @@ def plot_com_speed(all_raw_data, prefix_name):
     axis.legend()
 
     # y axis data
-    axis = figure.add_subplot(1, 1, 1)    
+    #axis = figure.add_subplot(1, 1, 1)    
     axis.plot(y_axis, 'r-', label=r'$v_{y} \ (m/s)$', linewidth=graphwidth)
     try:
         raw_reference_speed = search_parameter_value(all_raw_data['parameter'], 'reference.y_com_speed')
@@ -335,7 +336,7 @@ def plot_com_speed(all_raw_data, prefix_name):
     angular = [float(entry) for entry in angular]
 
     #Angular speed
-    axis = figure.add_subplot(1, 1, 1)    
+    #axis = figure.add_subplot(1, 1, 1)    
     axis.plot(angular, 'k-', label=r'$\omega_{z} \ (rad/s)$', linewidth=graphwidth)
     axis.set_xlabel("Iterations",size=axisfontsize)
     axis.set_ylabel("Velocities",size=axisfontsize)
@@ -509,7 +510,7 @@ def plot_camera_images(all_raw_data, prefix_name):
                      [point[1] for point in all_points], color=color, label=label,linewidths=7)
 
     # determine the number of reference points for reference 0
-    nRef    =  len([entry for entry in all_raw_data['reference_image_point'] if 'reference_id=000' in entry])
+    nRef    =  int(len([entry for entry in all_raw_data['reference_image_point'] if 'reference_id=000' in entry]))
     
     # points in the first reference image
     raw_reference_points = [entry for entry in all_raw_data['reference_image_point'] if 'reference_id=000' in entry]
@@ -534,7 +535,7 @@ def plot_camera_images(all_raw_data, prefix_name):
 
     # trajectories
     raw_trajectories = [all_raw_data['current_image_point'][x : x + nRef]
-                        for x in xrange(0, len(all_raw_data['current_image_point']), nRef)]
+                        for x in range(0, len(all_raw_data['current_image_point']), nRef)]
 
     raw_trajectories = [entry for entry in all_raw_data['current_image_point'] if 'reference_id=000' in entry] 
     all_trajectories = [[]] *nRef 
@@ -576,7 +577,7 @@ def plot_camera_images(all_raw_data, prefix_name):
         lc.set_array(v_coords)
         lc.set_linewidth(trajwidth)
         axis.add_collection(lc)
-        #axis.plot(x_coords, y_coords, color='black', linewidth=trajwidth)
+        axis.plot(x_coords, y_coords, color='black', linewidth=trajwidth)
 
     axis.set_xlabel("u-coordinate",size=axisfontsize)
     axis.set_ylabel("v-coordinate",size=axisfontsize)
@@ -592,25 +593,29 @@ def plot_camera_images(all_raw_data, prefix_name):
 def plot_detailed_visual_features(all_raw_data, prefix_name):
 
     def _split_raw_string(raw_entry):
-        __, name, actual, predicted, expected, ground_truth = raw_entry.split(', ')
+        #__, name, actual, predicted, expected, ground_truth = raw_entry.split(', ')
+        __, name, actual, predicted, expected = raw_entry.split(', ')
         __, name = name.split('=')
         __, actual = actual.split('=')
         __, predicted = predicted.split('=')
         __, expected = expected.split('=')
-        __, ground_truth = ground_truth.split('=')
-        return (name, float(actual), float(predicted), float(expected), float(ground_truth))
+        #__, ground_truth = ground_truth.split('=')
+        #return (name, float(actual), float(predicted), float(expected), float(ground_truth))
+        return (name, float(actual), float(predicted), float(expected))
 
     def _parse_visual_entries(all_raw_entires):
         parsed_data = {}
         for entry in all_raw_entires:
-            name, actual, predicted, expected, ground_truth = _split_raw_string(entry)
+            #name, actual, predicted, expected, ground_truth = _split_raw_string(entry)
+            name, actual, predicted, expected = _split_raw_string(entry)
             if name in parsed_data:
                 parsed_data[name][0].append(actual)
                 parsed_data[name][1].append(predicted)
                 parsed_data[name][2].append(expected)
-                parsed_data[name][3].append(ground_truth)
+                #parsed_data[name][3].append(ground_truth)
             else:
-                parsed_data[name] = ([actual], [predicted], [expected],[ground_truth])
+                #parsed_data[name] = ([actual], [predicted], [expected],[ground_truth])
+                parsed_data[name] = ([actual], [predicted], [expected])
         return parsed_data
 
 
@@ -620,10 +625,11 @@ def plot_detailed_visual_features(all_raw_data, prefix_name):
     colors = ['red','green','blue','magenta','cyan','brown','yellow']
     axis = figure.add_subplot(1, 1, 1)
     for index, name in enumerate(parsed_data.keys()):
-        actual_values, predicted_values, expected_values, ground_truth_values = parsed_data[name]
-        #axis.plot(actual_values, color=colors[index], label=r'%s observed'%(name), linestyle='-', linewidth=graphwidth)
-        axis.plot(predicted_values, color=colors[index], label=r'%s predicted'%(name), linestyle='-', linewidth=graphwidth)
-        axis.plot(ground_truth_values, color=colors[index], label=r'%s ground truth'%(name), linestyle=':', linewidth=graphwidth)
+        #actual_values, predicted_values, expected_values, ground_truth_values = parsed_data[name]
+        actual_values, predicted_values, expected_values = parsed_data[name]
+        axis.plot(actual_values, color=colors[index], label=r'%s observed'%(name), linestyle='-', linewidth=graphwidth)
+        axis.plot(predicted_values, color=colors[index], label=r'%s predicted'%(name), linestyle='--', linewidth=graphwidth)
+        #axis.plot(ground_truth_values, color=colors[index], label=r'%s ground truth'%(name), linestyle=':', linewidth=graphwidth)
         #axis.plot(expected_values, color=colors[index], label=r'%s reference'%(name), linestyle='--', linewidth=graphwidth)     
 
     axis.grid(True, linewidth=graphwidth)
@@ -633,10 +639,10 @@ def plot_detailed_visual_features(all_raw_data, prefix_name):
     axis.set_ylim(-1.2,1.2)
 
     try:
-        __, __, expected_values,__ = parsed_data['h11']
+        __, __, expected_values, = parsed_data['h11']
         axis.plot(expected_values, color='black', label='reference', linestyle='--', linewidth=graphwidth) 
         axis.legend(loc='best',fontsize=legendfontsize-3,ncol=3)
-        __, __, expected_values, __ = parsed_data['h12']
+        __, __, expected_values, = parsed_data['h12']
         axis.plot(expected_values, color='black', label='reference', linestyle='--', linewidth=graphwidth)
     except KeyError:
         __, __, expected_values, __ = parsed_data['e12']
@@ -651,29 +657,29 @@ def plot_detailed_visual_features(all_raw_data, prefix_name):
 def main():
     """ main function """
     if len(sys.argv) < 2:
-        print "Usage:"
-        print "    python {0} <options> <log>\n".format(sys.argv[0])
+        print( "Usage:")
+        print("    python {0} <options> <log>\n".format(sys.argv[0]))
         sys.exit(-1)
 
     for log_file in sys.argv[1:]:
-        print "Analyzing {0}...".format(log_file)
+        print("Analyzing {0}...".format(log_file))
         try:
             raw_data = load_data(log_file)
         except IOError:
-            print "ERROR: Invalid log file '{0}'".format(log_file)
+            print("ERROR: Invalid log file '{0}'".format(log_file))
             sys.exit(-1)
 
         prefix_name, __ = os.path.splitext(log_file)
 
-        #plot_functions = (plot_detailed_visual_features,plot_walk_pattern,plot_com_conf,plot_camera_images,plot_com_speed,plot_translation_objective_function)
+        plot_functions = (plot_detailed_visual_features,plot_walk_pattern,plot_com_conf,plot_camera_images,plot_com_speed,plot_translation_objective_function)
         #plot_functions = (plot_walk_pattern,plot_detailed_visual_features)
         #plot_functions = (plot_walk_pattern,plot_camera_images,plot_com_acceleration)
-        plot_functions = (plot_walk_pattern,plot_camera_images,plot_detailed_visual_features)
+        #plot_functions = (plot_com_speed,plot_com_conf)
         for function in plot_functions:
             try:
                 function(raw_data, prefix_name)
             except:
-                print "WARNING: Unable to plot '{}' skipping ...".format(function.func_name)
+                print("WARNING: Unable to plot '{}' skipping ...".format(function.func_name))
                 raise
 
 
