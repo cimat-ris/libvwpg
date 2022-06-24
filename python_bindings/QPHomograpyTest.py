@@ -21,8 +21,8 @@ import sys
 import math
 import os
 
-
-from QPHomograpy_py import QPHomographySimLinear 
+sys.path.append("..") #con esto me salgo de la carpeta python_bindings
+from build.QPHomograpy_py import QPHomographySimLinear 
 
 def main():
     """ main function """
