@@ -62,7 +62,6 @@ OPTION (BUILD_PYTHON_INTERFACE "Build the python binding" ON)
 IF(BUILD_PYTHON_INTERFACE)
 #substitute your version number
 find_package(Boost  REQUIRED COMPONENTS python)
-# find_package(Boost 1.55 EXACT REQUIRED COMPONENTS python)
 INCLUDE_DIRECTORIES("${Boost_INCLUDE_DIRS}" "/usr/include/python3.8" " qpOASES/include")
 find_package( PythonInterp 3.8 REQUIRED )
 find_package( PythonLibs 3.8 REQUIRED )
@@ -72,7 +71,6 @@ find_package( PythonLibs 3.8 REQUIRED )
 # Create the test1 executable
 ############################################################
 PYTHON_ADD_MODULE(QPHomograpy_py src/QPHomograpy.cpp)
-#_use_lib(QPHomograpy_py boost_filesystem boost_system qpoases OPENCV2_CORE OPENCV2_HIGHGUI)
 target_link_libraries(QPHomograpy_py libvwpg ${PYTHON_LIBRARIES} ${Boost_LIBRARIES} opencv_core opencv_highgui qpOASES)
 #  INSTALL(TARGETS QPHomograpy_py DESTINATION ${PYTHON_INSTALL_DIR})
 ENDIF(BUILD_PYTHON_INTERFACE)
