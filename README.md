@@ -44,7 +44,7 @@ Then, to plot the results use the plot_results.py script as follows:
 ```
 
 
-To run the  example  QPHomoTest.py of python:
+To run the  example  QPHomoTest.py of python, in the python_binding directory:
 
 ```bash
 >python QPHomoTest.py <file.ini>
