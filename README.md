@@ -54,4 +54,4 @@ Then, to plot the results use the plot_results.py script as follows:
 
 ```bash
 > python ../tools/plot_results.py <log_file.txt>
-``
+```
