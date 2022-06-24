@@ -50,3 +50,8 @@ To run the  example  QPHomoTest.py of python, in the python_binding directory:
 >python QPHomoTest.py <file.ini>
 ```
 
+Then, to plot the results use the plot_results.py script as follows:
+
+```bash
+> python ../tools/plot_results.py <log_file.txt>
+``
