@@ -412,8 +412,8 @@ void EssentialBase::UpdateActualVisualData()
             } 
             MPCNonLinearEssential *ess_nlmpc = dynamic_cast<MPCNonLinearEssential *>(visual_feature.model.get());
             if (ess_nlmpc) {
-                ess_mpc->ck_y_t(Y(t));
-                ess_mpc->y_real(-h);
+                ess_nlmpc->ck_y_t(Y(t));
+                ess_nlmpc->y_real(-h);
             } 
             // A visual feature is associated to a position in the essential matrix
             const std::pair<int,int> &p = visual_feature.model->GetMatrixPosition();
@@ -501,7 +501,7 @@ void EssentialBase::UpdatePredictedValues(const Matrix_t &solution) {
         LogCurrentPredictions(solution);
 }
 
-// Constructor: Simulated homography (use 3D points)
+// Constructor: Simulated essential matrix (use 3D points)
 EssentialSimulated::EssentialSimulated(const boost::property_tree::ptree &parameters):
     EssentialBase(parameters) {
 
