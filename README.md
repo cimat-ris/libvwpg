@@ -24,7 +24,7 @@ Then compile the libvwpg library. From the libvwpg directory:
 To run the test file:
 
 ```bash
-> ./bin/test1 <file.ini>
+> ./bin/test1-vwpg <file.ini>
 ```
 
 INI files are used to define the parameters for the simulation. There are multiple
@@ -34,7 +34,7 @@ Once the execution runs, you should
 redirect the standard output to a .txt file.
 
 ```bash
-> ./bin/test1 <file.ini>    > <log_file.txt>
+> ./bin/test1-vwpg <file.ini>    > <log_file.txt>
 ```
 
 Then, to plot the results use the plot_results.py script as follows:
