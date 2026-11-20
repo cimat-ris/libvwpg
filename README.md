@@ -1,6 +1,6 @@
 # libvwpg
 
-**Visual Walking Pattern Generation** library, that uses homography based control for the walking pattern generation of a humanoid robot.
+**Visual Walking Pattern Generation** library, that uses homography based control for the walking pattern generation of a humanoid robot used in https://www.sciencedirect.com/science/article/abs/pii/S0921889019306694.
 
 In order to compile this code two external dependencies should be installed: eigen and 
 
